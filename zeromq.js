@@ -7,7 +7,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
         this.topic = n.topic;
-        this.fields = n.fields.split(",");
+        this.fields = n.fields.split(",").map(function(f) { return f.trim(); });
         if (this.fields.length === 0) { this.fields = ["part0"]; }
         if (this.fields[0] === '') { this.fields = ["part0"]; }
         this.output = n.output;
@@ -38,7 +38,6 @@ module.exports = function(RED) {
         node.on("close", function() {
             node.sock.close();
         });
-
     }
     RED.nodes.registerType("zeromq in", ZmqInNode);
 
@@ -47,7 +46,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
         this.topic = n.topic;
-        this.fields = n.fields.split(",") || [];
+        this.fields = n.fields.split(",").map(function(f) { return f.trim(); }) || [];
         var node = this;
         node.sock = zmq.socket('pub');
         node.sock.bindSync(node.server);
@@ -67,7 +66,6 @@ module.exports = function(RED) {
         node.on("close", function() {
             node.sock.close();
         });
-
     }
     RED.nodes.registerType("zeromq out", ZmqOutNode);
 }
