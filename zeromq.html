@@ -2,10 +2,22 @@
 
 <script type="text/x-red" data-template-name="zeromq in">
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-random"></i> Server</label>
+        <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
         <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
     </div>
     <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-isserver" style="display:inline-block; width:auto; vertical-align:top;">
+        <label for="node-input-isserver" style="width:70%;">Host acts as server.</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <select id="node-input-intype">
+            <option value="ps">Subscribe</option>
+            <option value="pp">Pull</option>
+        </select>
+    </div>
+    <div class="form-row" id="zeromq-topic-field">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
         <input type="text" id="node-input-topic" placeholder="required topic">
     </div>
@@ -47,7 +59,9 @@
             topic: {value:""},
             fields: {value: "topic,payload"},
             server: {value:"tcp://127.0.0.1:5555"},
-            output: {value:"string"}
+            output: {value:"string"},
+            isserver: {value:false},
+            intype: {value:"ps"}
         },
         inputs: 0,
         outputs: 1,
@@ -57,6 +71,14 @@
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            $('#node-input-intype').on('change', function() {
+                if ($('#node-input-intype').val() === 'pp') {
+                    $('#zeromq-topic-field').hide();
+                }
+                else { $('#zeromq-topic-field').show(); }
+            });
         }
     });
 </script>
@@ -64,12 +86,24 @@
 
 <script type="text/x-red" data-template-name="zeromq out">
     <div class="form-row">
-        <label for="node-input-server"><i class="fa fa-random"></i> Server</label>
+        <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
         <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
     </div>
     <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-isserver" style="display:inline-block; width:auto; vertical-align:top;">
+        <label for="node-input-isserver" style="width:70%;">Host acts as server.</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <select id="node-input-intype">
+            <option value="ps">Publish</option>
+            <option value="pp">Push</option>
+        </select>
+    </div>
+    <div class="form-row" id="zeromq-topic-field">
         <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-        <input type="text" id="node-input-topic" placeholder="optional topic to send">
+        <input type="text" id="node-input-topic" placeholder="(optional) fixed topic to send">
     </div>
     <div class="form-row">
         <label for="node-input-fields"><i class="fa fa-tags"></i> Fields</label>
@@ -100,7 +134,9 @@
             name: {value:""},
             topic: {value:""},
             fields: {value: "topic,payload"},
-            server: {value:"tcp://*:5555"}
+            server: {value:"tcp://*:5555"},
+            isserver: {value:true},
+            intype: {value:"ps"}
         },
         inputs: 1,
         outputs: 0,

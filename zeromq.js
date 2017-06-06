@@ -6,15 +6,28 @@ module.exports = function(RED) {
     function ZmqInNode(n) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
+        this.isserver = n.isserver;
+        this.intype = n.intype || "ps";
         this.topic = n.topic;
         this.fields = n.fields.split(",").map(function(f) { return f.trim(); });
         if (this.fields.length === 0) { this.fields = ["part0"]; }
         if (this.fields[0] === '') { this.fields = ["part0"]; }
         this.output = n.output;
         var node = this;
-        node.sock = zmq.socket('sub');
-        node.sock.connect(node.server);
-        node.sock.subscribe(node.topic);
+
+        if (node.intype === "ps") { node.sock = zmq.socket('sub'); }
+        else { node.sock = zmq.socket('pull'); }
+
+        if (node.isserver === true) {
+            node.sock.bindSync(node.server);
+            node.status({fill:"green",shape:"dot",text:"bound"});
+        }
+        else {
+            node.sock.connect(node.server);
+            node.status({fill:"green",shape:"dot",text:"connected"});
+        }
+
+        if (node.intype === "ps") { node.sock.subscribe(node.topic); }
         node.sock.on('message', function() {
             var p = {};
             for (var i=0; i < arguments.length; i++) {
@@ -37,6 +50,7 @@ module.exports = function(RED) {
 
         node.on("close", function() {
             node.sock.close();
+            node.status({});
         });
     }
     RED.nodes.registerType("zeromq in", ZmqInNode);
@@ -45,11 +59,22 @@ module.exports = function(RED) {
     function ZmqOutNode(n) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
+        this.isserver = n.isserver;
+        this.intype = n.intype || "ps";
         this.topic = n.topic;
         this.fields = n.fields.split(",").map(function(f) { return f.trim(); }) || [];
         var node = this;
-        node.sock = zmq.socket('pub');
-        node.sock.bindSync(node.server);
+        if (node.intype === "ps") { node.sock = zmq.socket('pub'); }
+        else { node.sock = zmq.socket('push'); }
+
+        if (node.isserver === true) {
+            node.sock.bindSync(node.server);
+            node.status({fill:"green",shape:"dot",text:"bound"});
+        }
+        else {
+            node.sock.connect(node.server);
+            node.status({fill:"green",shape:"dot",text:"connected"});
+        }
 
         node.on("input", function(msg) {
             msg.topic = node.topic || msg.topic;
@@ -65,6 +90,7 @@ module.exports = function(RED) {
 
         node.on("close", function() {
             node.sock.close();
+            node.status({});
         });
     }
     RED.nodes.registerType("zeromq out", ZmqOutNode);

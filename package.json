@@ -1,6 +1,6 @@
 {
     "name"          : "node-red-contrib-zeromq",
-    "version"       : "0.0.1",
+    "version"       : "0.0.2",
     "description"   : "Node-RED nodes that provides a pair of ZeroMQ publish and subscribe nodes.",
     "dependencies"  : {
         "zeromq": "^4.2.2"
