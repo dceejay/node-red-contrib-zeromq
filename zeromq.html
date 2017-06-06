@@ -40,12 +40,12 @@
 </script>
 
 <script type="text/x-red" data-help-name="zeromq in">
-    <p>A node to subscribe to ZeroMQ messages.</p>
-    <p>The <b>server</b> should be specified as a ZeroMQ connection string.
-    This is typically of the form <code>tcp://ip.address.of.server:port</code></p>
-    <p>The <b>topic</b> of interest can be specified by a string. The topic matching is purely
+    <p>A node to subscribe to or pull ZeroMQ messages.</p>
+    <p>The <b>host</b> should be specified as a ZeroMQ connection string.
+    This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
+    <p>When subscribing the <b>topic</b> of interest can be specified by a string. The topic matching is purely
     on first matching characters - i.e. the topic starts with...</p>
-    <p>ZeroMQ messages can have multiple parts or <b>fields</b> - typically two - by default topic and payload,
+    <p>ZeroMQ messages can have multiple parts or <b>fields</b> - for publish/subscribe this is typically topic and payload,
     but you can name more if required depending upon the application you are trying to integrate,
     by using the comma separated field property.</p>
 </script>
@@ -116,14 +116,14 @@
 </script>
 
 <script type="text/x-red" data-help-name="zeromq out">
-    <p>A node to publish ZeroMQ messages.</p>
-    <p>The <b>server</b> should be specified as a ZeroMQ connection string.
-    This is typically of the form <code>tcp://*:port</code></p>
-    <p>By default the node expects to publish two fields -
+    <p>A node to publish or push ZeroMQ messages.</p>
+    <p>The <b>host</b> should be specified as a ZeroMQ connection string.
+    This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
+    <p>By default the node expects to publish or push two fields -
     <code>msg.topic</code> and <code>msg.payload</code>.
     However ZeroMQ can support multipart messages and extra <code>msg</code> properties
     to send can be specified by the comma separated <b>fields</b> configuration.</p>
-    <p>The <b>topic</b> can be fixed in the configuration if required.</p>
+    <p>The <b>topic</b> to send can be fixed in the configuration if required.</p>
 </script>
 
 <script type="text/javascript">
