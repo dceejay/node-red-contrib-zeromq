@@ -13,8 +13,8 @@
     <div class="form-row">
         <label>&nbsp;</label>
         <select id="node-input-intype">
-            <option value="ps">Subscribe</option>
-            <option value="pp">Pull</option>
+            <option value="sub">Subscribe</option>
+            <option value="pull">Pull</option>
         </select>
     </div>
     <div class="form-row" id="zeromq-topic-field">
@@ -72,6 +72,7 @@
         labelStyle: function() {
             return this.name?"node_label_italic":"";
         },
+        outputLabels: function(index) { return (this.intype === "ps") ? "subscribe" : "pull"; },
         oneditprepare: function() {
             $('#node-input-intype').on('change', function() {
                 if ($('#node-input-intype').val() === 'pp') {
@@ -97,8 +98,8 @@
     <div class="form-row">
         <label>&nbsp;</label>
         <select id="node-input-intype">
-            <option value="ps">Publish</option>
-            <option value="pp">Push</option>
+            <option value="pub">Publish</option>
+            <option value="push">Push</option>
         </select>
     </div>
     <div class="form-row" id="zeromq-topic-field">
@@ -147,6 +148,7 @@
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
-        }
+        },
+        inputLabels: function(index) { return (this.intype === "ps") ? "publish" : "push"; },
     });
 </script>

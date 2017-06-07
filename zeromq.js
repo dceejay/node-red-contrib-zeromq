@@ -7,7 +7,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
         this.isserver = n.isserver;
-        this.intype = n.intype || "ps";
+        this.intype = n.intype || "sub";
         this.topic = n.topic;
         this.fields = n.fields.split(",").map(function(f) { return f.trim(); });
         if (this.fields.length === 0) { this.fields = ["part0"]; }
@@ -15,8 +15,7 @@ module.exports = function(RED) {
         this.output = n.output;
         var node = this;
 
-        if (node.intype === "ps") { node.sock = zmq.socket('sub'); }
-        else { node.sock = zmq.socket('pull'); }
+        node.sock = zmq.socket(node.intype);
 
         if (node.isserver === true) {
             node.sock.bindSync(node.server);
@@ -27,7 +26,8 @@ module.exports = function(RED) {
             node.status({fill:"green",shape:"dot",text:"connected"});
         }
 
-        if (node.intype === "ps") { node.sock.subscribe(node.topic); }
+        if (node.intype === "sub") { node.sock.subscribe(node.topic); }
+
         node.sock.on('message', function() {
             var p = {};
             for (var i=0; i < arguments.length; i++) {
@@ -60,12 +60,11 @@ module.exports = function(RED) {
         RED.nodes.createNode(this, n);
         this.server = n.server;
         this.isserver = n.isserver;
-        this.intype = n.intype || "ps";
+        this.intype = n.intype || "pub";
         this.topic = n.topic;
         this.fields = n.fields.split(",").map(function(f) { return f.trim(); }) || [];
         var node = this;
-        if (node.intype === "ps") { node.sock = zmq.socket('pub'); }
-        else { node.sock = zmq.socket('push'); }
+        node.sock = zmq.socket(node.intype);
 
         if (node.isserver === true) {
             node.sock.bindSync(node.server);
