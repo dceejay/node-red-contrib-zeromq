@@ -8,7 +8,7 @@
     <div class="form-row">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-isserver" style="display:inline-block; width:auto; vertical-align:top;">
-        <label for="node-input-isserver" style="width:70%;">Host acts as server.</label>
+        <label for="node-input-isserver" style="width:70%;">Host acts as server</label>
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
@@ -61,24 +61,28 @@
             server: {value:"tcp://127.0.0.1:5555"},
             output: {value:"string"},
             isserver: {value:false},
-            intype: {value:"ps"}
+            intype: {value:"sub"}
         },
         inputs: 0,
         outputs: 1,
-        icon: "bridge-dash.png",
+        icon: "zeromq.png",
         label: function() {
             return this.name||this.topic||"zeromq";
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
         },
-        outputLabels: function(index) { return (this.intype === "ps") ? "subscribe" : "pull"; },
+        outputLabels: function(index) { return (this.intype === "sub") ? "subscribe" : "pull"; },
         oneditprepare: function() {
             $('#node-input-intype').on('change', function() {
-                if ($('#node-input-intype').val() === 'pp') {
+                if ($('#node-input-intype').val() !== 'sub') {
                     $('#zeromq-topic-field').hide();
+                    $('#node-input-fields').val("payload");
                 }
-                else { $('#zeromq-topic-field').show(); }
+                else {
+                    $('#zeromq-topic-field').show();
+                    $('#node-input-fields').val("topic,payload");
+                }
             });
         }
     });
@@ -93,7 +97,7 @@
     <div class="form-row">
         <label>&nbsp;</label>
         <input type="checkbox" id="node-input-isserver" style="display:inline-block; width:auto; vertical-align:top;">
-        <label for="node-input-isserver" style="width:70%;">Host acts as server.</label>
+        <label for="node-input-isserver" style="width:70%;">Host acts as server</label>
     </div>
     <div class="form-row">
         <label>&nbsp;</label>
@@ -137,11 +141,11 @@
             fields: {value: "topic,payload"},
             server: {value:"tcp://*:5555"},
             isserver: {value:true},
-            intype: {value:"ps"}
+            intype: {value:"pub"}
         },
         inputs: 1,
         outputs: 0,
-        icon: "bridge-dash.png",
+        icon: "zeromq.png",
         align: "right",
         label: function() {
             return this.name||"zeromq";
@@ -149,6 +153,92 @@
         labelStyle: function() {
             return this.name?"node_label_italic":"";
         },
-        inputLabels: function(index) { return (this.intype === "ps") ? "publish" : "push"; },
+        inputLabels: function(index) { return (this.intype === "pub") ? "publish" : "push"; },
+        oneditprepare: function() {
+            $('#node-input-intype').on('change', function() {
+                if ($('#node-input-intype').val() !== 'pub') {
+                    $('#node-input-fields').val("payload");
+                }
+                else {
+                    $('#zeromq-topic-field').show();
+                    $('#node-input-fields').val("topic,payload");
+                }
+            });
+        }
+    });
+</script>
+
+
+<script type="text/x-red" data-template-name="zeromq request">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
+        <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-isserver" style="display:inline-block; width:auto; vertical-align:top;">
+        <label for="node-input-isserver" style="width:70%;">Host acts as server</label>
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <select id="node-input-intype">
+            <option value="pair">Pair</option>
+            <option value="req">Request</option>
+            <option value="rep">Response</option>
+            <option value="dealer">Dealer</option>
+            <option value="router">Router</option>
+            <!-- <option value="stream">Stream</option> -->
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-fields"><i class="fa fa-tags"></i> Fields</label>
+        <input type="text" id="node-input-fields" placeholder="required fields">
+    </div>
+    <div class="form-row">
+        <label for="node-input-output"><i class="fa fa-map"></i> Output</label>
+        <select id="node-input-output">
+            <option value="buffer">a binary Buffer</option>
+            <option value="string">a String if possible</option>
+            <option value="json">a JSON object if possible</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+
+<script type="text/x-red" data-help-name="zeromq request">
+    <p>A node to handle ZeroMQ pair, request and response messaging modes.</p>
+    <p>The <b>host</b> should be specified as a ZeroMQ connection string.
+    This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
+    <p>ZeroMQ can support multipart messages and extra <code>msg</code> properties
+    to send can be specified by the comma separated <b>fields</b> configuration.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('zeromq request',{
+        category: 'output',
+        color: "azure",
+        paletteLabel: "zeromq 2way",
+        defaults: {
+            name: {value:""},
+            fields: {value: "payload"},
+            server: {value:"tcp://*:5555"},
+            output: {value:"string"},
+            isserver: {value:false},
+            intype: {value:"pair"}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "zeromq.png",
+        label: function() {
+            return this.name||"zeromq";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        outputLabels: function(index) { return this.intype; }
     });
 </script>

@@ -15,7 +15,6 @@ Run the following command in your Node-RED user directory - typically `~/.node-r
     npm install node-red-contrib-zeromq
 
 
-
 #### Input
 
 The **host** should be specified as a ZeroMQ connection string.
@@ -29,6 +28,7 @@ ZeroMQ messages can have multiple parts or **fields** - typically two - by defau
 but you can name more if required depending upon the application you are trying to integrate,
 by using the comma separated field property.
 
+
 #### Output
 
 The **host** should be specified as a ZeroMQ connection string.
@@ -39,3 +39,14 @@ However ZeroMQ can support multipart messages and the `msg` properties
 to send can be specified by the comma separated **fields** configuration.
 
 The **topic** to send can be fixed in the configuration if required.
+
+
+#### Request
+
+A node to handle ZeroMQ pair, request and response messaging modes.
+
+The **host** should be specified as a ZeroMQ connection string.
+This is typically of the form 'tcp://ip.address.of.host:port'
+
+ZeroMQ can support multipart messages and extra 'msg' properties
+to send can be specified by the comma separated **fields** configuration.
