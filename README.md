@@ -1,12 +1,13 @@
 node-red-contrib-zeromq
 =======================
 
-<a href="http://nodered.org" target="new">Node-RED</a> nodes that provide
-a pair of publish subscribe or push pull nodes for ZeroMQ.
+<a href="http://nodered.org" target="new">Node-RED</a> nodes that provides
+publish subscribe, push pull, request reply and pair nodes for ZeroMQ.
 
-Provides a peer-to-peer publish subscribe capability, not unlike MQTT, but without a broker, and without many of the same semantics. Works nicely using *localhost* to provide local process separation. Also support push pull mode of connection.
+The peer-to-peer publish subscribe capability, while not unlike MQTT, but without a broker, and without many of the same semantics. It works nicely using *localhost* to provide local process separation.
 
 Relies on the <a href="https://www.npmjs.com/package/zeromq" target="new">zeromq</a> npm package to provide pre-build binaries to make installing easier... but can take some time to compile if not available.
+
 
 ### Install
 
