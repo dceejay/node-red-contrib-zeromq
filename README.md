@@ -1,6 +1,8 @@
 node-red-contrib-zeromq
 =======================
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dceejay/node-red-contrib-zeromq.svg)](https://greenkeeper.io/)
+
 <a href="http://nodered.org" target="new">Node-RED</a> nodes that provides
 publish subscribe, push pull, request reply and pair nodes for ZeroMQ.
 
