@@ -42,18 +42,15 @@ module.exports = function(RED) {
             var p = {};
             for (var i=0; i < arguments.length; i++) {
                 if (i >= node.fields.length) { node.fields[i] = "part"+i; }
-                if (node.output === "string") {
+                p[node.fields[i]] = arguments[i];
+                if (node.output !== "buffer") {
                     try { p[node.fields[i]] = arguments[i].toString(); }
-                    catch (e) {}
+                    catch (e) { p.error = true; node.error("Not a string",p); }
                 }
-                else if (node.output === "json") {
-                    try {
-                        p[node.fields[i]] = arguments[i].toString();
-                        p[node.fields[i]] = JSON.parse(p[node.fields[i]]);
-                    }
-                    catch (e) {}
+                if (node.output === "json") {
+                    try { p[node.fields[i]] = JSON.parse(p[node.fields[i]]); }
+                    catch (e) { p.error = true; node.error("Failed to parse",p); }
                 }
-                else { p[node.fields[i]] = arguments[i]; }
             }
             node.send(p);
         });
@@ -173,18 +170,15 @@ module.exports = function(RED) {
             var p = {};
             for (var i=0; i < arguments.length; i++) {
                 if (i >= node.fields.length) { node.fields[i] = "part"+i; }
-                if (node.output === "string") {
+                p[node.fields[i]] = arguments[i];
+                if (node.output !== "buffer") {
                     try { p[node.fields[i]] = arguments[i].toString(); }
-                    catch (e) {}
+                    catch (e) { p.error = true; node.error("Not a string",p); }
                 }
-                else if (node.output === "json") {
-                    try {
-                        p[node.fields[i]] = arguments[i].toString();
-                        p[node.fields[i]] = JSON.parse(p[node.fields[i]]);
-                    }
-                    catch (e) {}
+                if (node.output === "json") {
+                    try { p[node.fields[i]] = JSON.parse(p[node.fields[i]]); }
+                    catch (e) { p.error = true; node.error("Failed to parse",p); }
                 }
-                else { p[node.fields[i]] = arguments[i]; }
             }
             node.send(p);
         });

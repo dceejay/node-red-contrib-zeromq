@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<script type="text/x-red" data-template-name="zeromq in">
+<script type="text/html" data-template-name="zeromq in">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
         <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
@@ -39,7 +39,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="zeromq in">
+<script type="text/html" data-help-name="zeromq in">
     <p>A node to subscribe to or pull ZeroMQ messages.</p>
     <p>The <b>host</b> should be specified as a ZeroMQ connection string.
     This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
@@ -52,7 +52,7 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('zeromq in',{
-        category: 'input',
+        category: 'network',
         color: "azure",
         defaults: {
             name: {value:""},
@@ -72,7 +72,7 @@
         labelStyle: function() {
             return this.name?"node_label_italic":"";
         },
-        outputLabels: function(index) { return (this.intype === "sub") ? "subscribe" : "pull"; },
+        outputLabels: function(index) { return this.output; },
         oneditprepare: function() {
             $('#node-input-intype').on('change', function() {
                 if ($('#node-input-intype').val() !== 'sub') {
@@ -89,7 +89,7 @@
 </script>
 
 
-<script type="text/x-red" data-template-name="zeromq out">
+<script type="text/html" data-template-name="zeromq out">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
         <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
@@ -120,7 +120,7 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="zeromq out">
+<script type="text/html" data-help-name="zeromq out">
     <p>A node to publish or push ZeroMQ messages.</p>
     <p>The <b>host</b> should be specified as a ZeroMQ connection string.
     This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
@@ -133,7 +133,7 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('zeromq out',{
-        category: 'output',
+        category: 'network',
         color: "azure",
         defaults: {
             name: {value:""},
@@ -169,7 +169,7 @@
 </script>
 
 
-<script type="text/x-red" data-template-name="zeromq request">
+<script type="text/html" data-template-name="zeromq request">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-random"></i> Host</label>
         <input type="text" id="node-input-server" placeholder="transport://host.ip.address:port">
@@ -209,7 +209,7 @@
 </script>
 
 
-<script type="text/x-red" data-help-name="zeromq request">
+<script type="text/html" data-help-name="zeromq request">
     <p>A node to handle ZeroMQ pair, request and response messaging modes.</p>
     <p>The <b>host</b> should be specified as a ZeroMQ connection string.
     This is typically of the form <code>tcp://ip.address.of.host:port</code></p>
@@ -219,7 +219,7 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('zeromq request',{
-        category: 'output',
+        category: 'network',
         color: "azure",
         paletteLabel: "zeromq 2way",
         defaults: {
@@ -239,6 +239,6 @@
         labelStyle: function() {
             return this.name?"node_label_italic":"";
         },
-        outputLabels: function(index) { return this.intype; }
+        outputLabels: function(index) { return this.output; }
     });
 </script>
