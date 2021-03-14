@@ -44,12 +44,12 @@ module.exports = function(RED) {
                 if (i >= node.fields.length) { node.fields[i] = "part"+i; }
                 p[node.fields[i]] = arguments[i];
                 if (node.output !== "buffer") {
-                    try { p[node.fields[i]] = arguments[i].toString(); }
+                    try { p[node.fields[i]] = p[node.fields[i]].toString(); }
                     catch (e) { p.error = true; node.error("Not a string",p); }
                 }
                 if (node.output === "json") {
                     try { p[node.fields[i]] = JSON.parse(p[node.fields[i]]); }
-                    catch (e) { p.error = true; node.error("Failed to parse",p); }
+                    catch (e) { }
                 }
             }
             node.send(p);
