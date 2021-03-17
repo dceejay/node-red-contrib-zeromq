@@ -77,11 +77,9 @@
             $('#node-input-intype').on('change', function() {
                 if ($('#node-input-intype').val() !== 'sub') {
                     $('#zeromq-topic-field').hide();
-                    $('#node-input-fields').val("payload");
                 }
                 else {
                     $('#zeromq-topic-field').show();
-                    $('#node-input-fields').val("topic,payload");
                 }
             });
         }
@@ -157,11 +155,10 @@
         oneditprepare: function() {
             $('#node-input-intype').on('change', function() {
                 if ($('#node-input-intype').val() !== 'pub') {
-                    $('#node-input-fields').val("payload");
+                    $('#zeromq-topic-field').hide();
                 }
                 else {
                     $('#zeromq-topic-field').show();
-                    $('#node-input-fields').val("topic,payload");
                 }
             });
         }

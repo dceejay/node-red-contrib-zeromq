@@ -1,6 +1,6 @@
 {
     "name"          : "node-red-contrib-zeromq",
-    "version"       : "0.0.9",
+    "version"       : "0.0.10",
     "description"   : "Node-RED nodes that provides ZeroMQ in, out and 2-way capability.",
     "dependencies"  : {
         "zeromq": "^5.2.0"
